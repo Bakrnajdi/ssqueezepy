@@ -277,25 +277,25 @@ def infer_scaletype(scales):
     th_log = 1e-15 if scales.dtype == np.float64 else 4e-7
     th_lin = th_log * 1e3  # less accurate for some reason
 
-    if np.mean(np.abs(np.diff(scales, 2, axis=0))) < th_lin:
-        scaletype = 'linear'
-        nv = None
+    # if np.mean(np.abs(np.diff(scales, 2, axis=0))) < th_lin:
+    #     scaletype = 'linear'
+    #     nv = None
 
-    elif np.mean(np.abs(np.diff(np.log(scales), 2, axis=0))) < th_log:
-        scaletype = 'log'
-        # ceil to avoid faulty float-int roundoffs
-        nv = int(np.round(1 / np.diff(np.log2(scales), axis=0)[0]))
+    # elif np.mean(np.abs(np.diff(np.log(scales), 2, axis=0))) < th_log:
+    #     scaletype = 'log'
+    #     # ceil to avoid faulty float-int roundoffs
+    #     nv = int(np.round(1 / np.diff(np.log2(scales), axis=0)[0]))
 
-    elif logscale_transition_idx(scales) is None:
-        raise ValueError("could not infer `scaletype` from `scales`; "
-                         "`scales` array must be linear or exponential. "
-                         "(got diff(scales)=%s..." % np.diff(scales, axis=0)[:4])
+    # elif logscale_transition_idx(scales) is None:
+    #     raise ValueError("could not infer `scaletype` from `scales`; "
+    #                      "`scales` array must be linear or exponential. "
+    #                      "(got diff(scales)=%s..." % np.diff(scales, axis=0)[:4])
 
-    else:
-        scaletype = 'log-piecewise'
-        nv = nv_from_scales(scales)
+    # else:
+    #     scaletype = 'log-piecewise'
+    #     nv = nv_from_scales(scales)
 
-    return scaletype, nv
+    return 'linear',None
 
 
 def make_scales(N, min_scale=None, max_scale=None, nv=32, scaletype='log',
